@@ -314,13 +314,18 @@ ANIMAL_TEMPLATE = """
 </html>
 """
 
+def check_session():
+    pass
+
 @app.route('/dashboard')
 def dashboard():
+    check_session():
     user_role = request.args.get('role', 'guest')
     return render_template_string(DASHBOARD_TEMPLATE, role=user_role, animals=ANIMALS)
 
 @app.route('/animal/<int:animal_id>')
 def animal_detail(animal_id):
+    check_session():
     animal = ANIMALS.get(animal_id)
     if animal is None:
         abort(404)
