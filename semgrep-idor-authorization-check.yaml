@@ -1,0 +1,32 @@
+rules:
+  - id: missing-idor-authorization-check
+    languages:
+      - python
+    message: >-
+      Potential IDOR vulnerability detected. This route handler accepts a user-controlled ID parameter but does not appear 
+      to validate the logged-in user's ownership or permissions before interacting with the database or returning the data.
+    severity: ERROR
+    metadata:
+      owasp:
+        - A01:2021-Broken Access Control
+    patterns:
+      - pattern-either:
+
+          - pattern: |
+              @app.route(...)
+              def $ROUTE_FUNC(...):
+                  ...
+                  $RES = ANIMALS.get($ID)
+                  ...
+          - pattern: | 
+              @app.route(...)
+              def $ROUTE(...):
+                  ...
+                  $ROLE = request.args.get(...)
+                  ...
+      - pattern-not: |
+          @app.route(...)
+          def $ROUTE(...):
+              ...
+              check_session(...)
+              ... 
