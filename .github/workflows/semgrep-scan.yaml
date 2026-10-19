@@ -3,10 +3,10 @@ on: [push, pull_request]
 
 jobs:
   semgrep-scan:
-    runs-on: ubuntu-lastest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        users: actions/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -19,4 +19,4 @@ jobs:
           pip install semgrep
 
       - name: Run Semgrep Scan
-        run: semgrep --config=semgrep-idor-authorization-check.yaml .
+        run: semgrep --config=semgrep-idor-authorization-check.yaml --error.
